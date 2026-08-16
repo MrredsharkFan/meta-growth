@@ -1,17 +1,19 @@
 function initPlayer() {
     return {
-        version: "2.a.0"
+        points: new Decimal(0),
+        version: "alpha",
+        basic_upgrades: [new Decimal(0),new Decimal(0),new Decimal(0)]
     }
 }
 
-NAME = undefined //place you want to direct your local storage thing
+NAME = "meta-growth" //place you want to direct your local storage thing
 
 
 
 player = initPlayer()
 
-const player_vars_d = []
-const player_vars_l = []
+const player_vars_d = ["points"]
+const player_vars_l = ["basic_upgrades"]
 const player_vars_str = []
 
 function detectNaN() {
@@ -38,7 +40,7 @@ function save() {
     localStorage.setItem(NAME, JSON.stringify(player))
 }
 
-//s = setInterval(save, 1000, 1)
+s = setInterval(save, 1000, 1)
 
 function load() {
     var u = JSON.parse(localStorage.getItem(NAME))
@@ -71,7 +73,7 @@ const banks =
             ]
 
 load()
-player.version = "2.a.0"
+player.version = "alpha"
 
 function bank(num) {
     if (confirm("Are you sure you want to use this save? This will OVERRIDE your progress!")) {

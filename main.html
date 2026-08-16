@@ -10,7 +10,38 @@
     <script src="save.js"></script>
     <script src="game.js"></script>
     <script defer src="v.js"></script>
+
+    <style>
+        .basic_upg {
+            text-align: center;
+            flex: 1
+        }
+    </style>
+
     <div id="app">
-        {{player}}
+        <div style="text-align: center;">
+            <span style="font-size: 200%">{{format(player.points)}} points</span><br>
+            <span style="font-size: 150%;">{{format(get_gain())}}/s</span>
+            <br>Formula: {{format(mul())}} * (1+x)<sup>{{format(exp())}}</sup> * (1+log<sub>10</sub>(x+1)<sup>{{format(log_exp())}}</sup>)
+        </div>
+        <hr>
+        <i>Basic Upgrades</i><br>
+        <div style="display: flex; flex-direction: row;">
+        <button class="basic_upg" onclick="bu1()">
+            Increase log exponent by 1.00<br>
+            Cost: {{format(cost_bu1())}}<br>
+            Bought: {{format(player.basic_upgrades[0])}}
+        </button>
+        <button class="basic_upg" onclick="bu2()">
+            Increase multiplier by 1.00<br>
+            Cost: {{format(cost_bu2())}}<br>
+            Bought: {{format(player.basic_upgrades[1])}}
+        </button>
+        <button class="basic_upg" onclick="bu3()">
+            Increase exponent by 0.01<br>
+            Cost: {{format(cost_bu3())}}<br>
+            Bought: {{format(player.basic_upgrades[2])}}
+        </button>
+        </div>
     </div>
 </html>
