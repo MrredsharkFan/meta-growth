@@ -12,9 +12,19 @@
     <script defer src="v.js"></script>
 
     <style>
+        html {
+            background-color: black;
+        }
+
+        #app {
+            color: white;
+            padding: 10px
+        }
+
         .basic_upg {
             text-align: center;
-            flex: 1
+            flex: 1;
+            border-radius: 3px;
         }
     </style>
 
@@ -22,26 +32,31 @@
         <div style="text-align: center;">
             <span style="font-size: 200%">{{format(player.points)}} points</span><br>
             <span style="font-size: 150%;">{{format(get_gain())}}/s</span>
-            <br>Formula: {{format(mul())}} * (1+x)<sup>{{format(exp())}}</sup> * (1+log<sub>10</sub>(x+1)<sup>{{format(log_exp())}}</sup>)
+            <br>Formula: (1+x)<sup style="color: #eecccc"><b>{{format(exp())}}</b></sup> * <b style="color: #eeeecc">{{format(mul())}}</b> * (1+log<sub>10</sub>(x+1)<sup style="color: #cceecc"><b>{{format(log_exp())}}</b></sup>)
         </div>
         <hr>
-        <i>Basic Upgrades</i><br>
+        <i style="font-size: 150%">Basic Upgrades</i><br>
         <div style="display: flex; flex-direction: row;">
-        <button class="basic_upg" onclick="bu1()">
+        <button class="basic_upg" onclick="bu1()" style="background-color: #eecccc;">
             Increase log exponent by 1.00<br>
             Cost: {{format(cost_bu1())}}<br>
             Bought: {{format(player.basic_upgrades[0])}}
         </button>
-        <button class="basic_upg" onclick="bu2()">
+        <button class="basic_upg" onclick="bu2()" style="background-color: #eeeecc;">
             Increase multiplier by 1.00<br>
             Cost: {{format(cost_bu2())}}<br>
             Bought: {{format(player.basic_upgrades[1])}}
         </button>
-        <button class="basic_upg" onclick="bu3()">
+        <button class="basic_upg" onclick="bu3()" style="background-color: #cceecc;">
             Increase exponent by 0.01<br>
             Cost: {{format(cost_bu3())}}<br>
             Bought: {{format(player.basic_upgrades[2])}}
         </button>
         </div>
+        <hr>
+        <i style="font-size: 150%">Prestige<sup>n</sup></i><br>
+        <button class="prestige_btn">
+            Prestige for ???
+        </button>
     </div>
 </html>
