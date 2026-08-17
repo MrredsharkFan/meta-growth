@@ -8,6 +8,9 @@ const t2_1 = ",Mi,Mc,Na,Pi,Fm,At,Zp,Yt,Xo".split(",")
 
 //i know NOTHING about regex so i let AI gen this part
 //could've copied from ad notations for more dignity but i suck
+
+//wait .toLocaleString seems to work
+//but that's 3 digits so NO
 function commaFormat(num) {
     var v = num.toString().split(".")
     v[0] = v[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -56,11 +59,11 @@ function hex(num) {
     return parseInt(j, 2).toString(16)
 }
 
-function format(num, prec = 2, small = false, no = "S:1e6", comma = 6) {
-    if (num.mag==Infinity){return Infinity}
+function format(num, prec = 3, small = false, no = "S:1e3003", comma = 6) {
     if (no[0] == "S") { var lim = no.split(":")[1] }
     else { var lim = new Decimal(0) }
     var num = new Decimal(num)
+    if (num.mag == Infinity) { return Infinity }
     if (no[0] == "H") { return hex(num) }
     if (num.eq(0)) { return num.toFixed(prec) }
     if (num.lt(0)) { return `-${format(num.times(-1))}` }

@@ -2,7 +2,14 @@ function initPlayer() {
     return {
         points: new Decimal(0),
         version: "alpha",
-        basic_upgrades: [new Decimal(0),new Decimal(0),new Decimal(0)]
+        basic_upgrades: [new Decimal(0), new Decimal(0), new Decimal(0)],
+        prestige_currency: [new Decimal(0)],
+        upgs: {"1/1/0":new Decimal(0),"1/1/1": new Decimal(0),"1/0/0": new Decimal(0)},
+
+        unlocked_layers: 0,
+        page: 0,
+
+        autobuy_basic: false
     }
 }
 
@@ -13,8 +20,8 @@ NAME = "meta-growth" //place you want to direct your local storage thing
 player = initPlayer()
 
 const player_vars_d = ["points"]
-const player_vars_l = ["basic_upgrades"]
-const player_vars_str = []
+const player_vars_l = ["basic_upgrades", "prestige_currency", "upgs"]
+const player_vars_str = ["unlocked_layers", "page", "autobuy_basic"]
 
 function detectNaN() {
     for (var i in player_vars_d) {
@@ -73,6 +80,7 @@ const banks =
             ]
 
 load()
+
 player.version = "alpha"
 
 function bank(num) {

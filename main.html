@@ -4,9 +4,11 @@
     <script defer src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/remove-focus-outline@1.2.1/outline.min.js"></script>
 
+    <script defer src="news.js"></script>
     <script src="essential.js"></script>
     <script src="eternity.js"></script>
     <script src="format.js"></script>
+    <script src="upgrade.js"></script>
     <script src="save.js"></script>
     <script src="game.js"></script>
     <script defer src="v.js"></script>
@@ -26,17 +28,37 @@
             flex: 1;
             border-radius: 3px;
         }
+
+        .glow1 {
+            text-shadow: 0 0 10px #ffffff;
+        }
+
+        .pres_upg {
+            min-width: 25%;
+            max-width: 25%;
+        }
     </style>
 
     <div id="app">
-        <div style="text-align: center;">
-            <span style="font-size: 200%">{{format(player.points)}} points</span><br>
-            <span style="font-size: 150%;">{{format(get_gain())}}/s</span>
-            <br>Formula: (1+x)<sup style="color: #eecccc"><b>{{format(exp())}}</b></sup> * <b style="color: #eeeecc">{{format(mul())}}</b> * (1+log<sub>10</sub>(x+1)<sup style="color: #cceecc"><b>{{format(log_exp())}}</b></sup>)
+        <div style="display: flex">
+            <div style="flex: 1; text-align: left;">
+                Generalized Incremental Game, 2021 or 2026 Edition
+            </div>
+            <div style="flex: 4; text-align: right;" id="news_ticker">
+                
+            </div>
         </div>
         <hr>
-        <i style="font-size: 150%">Basic Upgrades</i><br>
-        <div style="display: flex; flex-direction: row;">
+        <div style="text-align: center;">
+            <span style="font-size: 200%" class="glow1">{{format(player.points)}} points</span><br>
+            <span style="font-size: 150%;" class="glow1">{{format(get_gain())}}/s</span>
+            <br>Gain formula: 
+            (1+log<sub>10</sub>(x+1)<sup style="color: #eecccc"><b>{{format(log_exp())}}</b></sup>) *
+            <b style="color: #eeeecc">{{format(mul())}}</b> *
+            (1+x)<sup style="color: #cceecc"><b>{{format(exp())}}</b></sup>
+        </div>
+        <hr>
+        <div style="display: flex; flex-direction: row; gap: 10px">
         <button class="basic_upg" onclick="bu1()" style="background-color: #eecccc;">
             Increase log exponent by 1.00<br>
             Cost: {{format(cost_bu1())}}<br>
@@ -54,9 +76,29 @@
         </button>
         </div>
         <hr>
-        <i style="font-size: 150%">Prestige<sup>n</sup></i><br>
-        <button class="prestige_btn">
-            Prestige for ???
-        </button>
+        <div style="text-align: center;">
+            Autobuy Basic Upgrades at 1,000 Best P<sup>1</sup><br>
+                <span style="font-size: 200%">{{format(player.prestige_currency[player.page])}} Prestige<sup>{{player.page+1}}</sup></span><br>
+            Boosting points by {{format(prestige_boost(player.page))}}<br>
+                <button style="flex: 1" onclick="player.page = Math.max(0,player.page-1);gen_all_upgs(player.page)">&larr;</button>
+                <button style="flex: 1" onclick="player.page = Math.min(player.prestige_currency.length,player.page+1);gen_all_upgs(player.page)">&rarr;</button>
+            <br><button class="prestige_btn" onclick="prestige(player.page)">
+                Prestige for {{format(prestige_gain(player.page))}} Prestige<sup>{{player.page+1}}</sup><br>
+                (Requires at least 1 to reset)
+            </button>
+        </div>
+        <hr>
+        <div style="text-align: center;">
+            <span style="font-size: 200%">Prestige Upgrades  </sup></span>
+            <button onclick="buy_max_change()">Currently buying <span id="buy_text">x1</span><br><sub>Click to change!</sub></button><br>
+            <div style="display: flex;">
+                <div style="flex: 1">
+                    <h3><u>Total boosts</u></h3>
+                    <span id="total_boost"></span>
+                </div>
+                <div style="flex: 1; display: flex; flex-wrap: wrap;" id="pupg">
+                </div>
+            </div>
+        </div>
     </div>
 </html>

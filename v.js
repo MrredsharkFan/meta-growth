@@ -11,7 +11,14 @@ var app = new Vue({
 
         cost_bu1,
         cost_bu2,
-        cost_bu3
+        cost_bu3,
+
+        prestige_gain,
+        prestige_boost,
+
+        upg_cost
     }
 }
 )
+
+gen_all_upgs(player.page)
