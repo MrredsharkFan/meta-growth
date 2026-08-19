@@ -17,15 +17,17 @@ function buy_auto() {
 function gen_auto_triggers() {
     document.getElementById("auto_upg").innerHTML = ``
     for (var i in player.upgs) {
+        var k = i.split("/"); k = Math.max(k[0], k[1])
         document.getElementById("auto_upg").innerHTML = document.getElementById("auto_upg").innerHTML +
-            `<button id="a${i}" onclick="switch_auto('${i}')" style="background-color: #ffffff">Autobuy<br>"${btn_name(i)}"?</button><br>`
+            `<button id="a${i}" onclick="switch_auto('${i}')" style="background-color: hsl(${k * 30},50%,80%">Autobuy<br>"${btn_name(i)}"?</button><br>`
     }
 }
 
 function switch_auto(i) {
     if (player.automated.includes(i)) {
         player.automated[player.automated.indexOf(i)] = null
-        document.getElementById(`a${i}`).style.backgroundColor = "#ffffff"
+        var k = i.split("/"); k = Math.max(k[0],k[1])
+        document.getElementById(`a${i}`).style.backgroundColor = `hsl(${k * 30},50%,80%`
     }
     else
         if (player.automated.length < player.automatons.toNumber() || player.automated.indexOf(null) != -1) {
@@ -40,11 +42,12 @@ function gen_auto_triggered() {
     document.getElementById("auto_enabled").innerHTML = ``
     for (var i in player.automated) {
         var j = player.automated[i]
+        var k = j.split("/"); k = Math.max(k[0],k[1])
         if (!(null==j)) {
             document.getElementById("auto_enabled").innerHTML = document.getElementById("auto_enabled").innerHTML +
                 `${btn_name(j)}<br>`
             console.log(i)
-            document.getElementById(`a${j}`).style.backgroundColor = "#dddddd"
+            document.getElementById(`a${j}`).style.backgroundColor = `hsl(${k*30},50%,60%`
         }
     }
 }

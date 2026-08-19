@@ -57,8 +57,11 @@
 
     <div id="app">
         <div style="display: flex">
-            <div style="flex: 1; text-align: left;">
+            <div style="flex: 2; text-align: left;">
                 Generalized Incremental Game, 2021 or 2026 Edition
+            </div>
+            <div style="flex: 2; text-align: left;">
+                <button onclick="import_player('')">HARD RESET</button>
             </div>
             <div style="flex: 4; text-align: right;" id="news_ticker">
                 
@@ -93,12 +96,12 @@
         </div>
         <hr>
         <div style="display: flex; gap: 10px;">
-        <button style="flex: 1; padding: 5px;" onclick="switch_tab('p')">Prestige</button>
-        <button style="flex: 1; padding: 5px;" onclick="switch_tab('m')">Automation</button>
+        <button style="flex: 1; padding: 5px;" onclick="switch_tab('p')">{{player.total_points.gte(1e24)?"Prestige":"Reach 1.000 Sp points to unlock!"}}</button>
+        <button style="flex: 1; padding: 5px;" onclick="switch_tab('m')">{{player.total_points.gte(1e308)?"Automation":"Reach 1.000e308 points to unlock!"}}</button>
         <button style="flex: 1; padding: 5px;" onclick="switch_tab('e')">Extra Upgrades</button>
         </div>
         <hr>
-        <div  id="pres-tab">
+        <div id="pres-tab" style="display: none;">
             <div style="text-align: center;">
                 Autobuy Basic Upgrades at 1,000 Best P<sup>1</sup><br>
                     <span style="font-size: 200%">{{format(player.prestige_currency[player.page])}} Prestige<sup>{{player.page+1}}</sup></span><br>
@@ -125,7 +128,7 @@
             </div>
         </div>
         <div id="auto-tab" style="display: none; text-align: center;">
-            You currently have <span style="font-size: 150%;">{{player.automatons}}</span> automation points, enabling you to automate {{player.automated.length}}/{{player.automatons}} upgrades.<br>
+            You currently have <span style="font-size: 150%;">{{player.automatons}}</span> automation points, enabling you to automate {{player.automatons}} upgrades.<br>
             <i>Also, when you get prestige<sup>n</sup>, gain 100% of prestige<sup>n-2</sup>/s</i><br>
             <button onclick="buy_auto()">
                 Gain 1 automation point<br>Cost: {{format(auto_cost())}}
@@ -139,12 +142,15 @@
                 </div>
                 <div style="flex: 3;">
                     Click to toggle automation on/off.<br>
+                    The colors indicate what layer this upgrade is on.<br>
                     <div id="auto_upg" style="display: flex"></div>
                 </div>
             </div>
         </div>
         <div id="extra-tab" style="display: none; text-align: center;">
             Your score is <span style="font-size: 150%">{{format(player.score,5)}}</span>
+            <hr>
+            ^{{format(sp_boost(),6)}} prestige gain
         </div>
     </div>
 </html>

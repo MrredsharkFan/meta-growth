@@ -18,7 +18,9 @@ var app = new Vue({
 
         upg_cost,
 
-        auto_cost
+        auto_cost,
+
+        sp_boost
     }
 }
 )

@@ -12,7 +12,10 @@ function initPlayer() {
         autobuy_basic: false,
 
         automatons: new Decimal(0),
-        automated: []
+        automated: [],
+
+        total_points: new Decimal(0),
+        score: new Decimal(0)
     }
 }
 
@@ -22,7 +25,7 @@ NAME = "meta-growth" //place you want to direct your local storage thing
 
 player = initPlayer()
 
-const player_vars_d = ["points","automatons"]
+const player_vars_d = ["points","automatons","score"]
 const player_vars_l = ["basic_upgrades", "prestige_currency", "upgs"]
 const player_vars_str = ["unlocked_layers", "page", "autobuy_basic","automated"]
 

@@ -80,13 +80,14 @@ function prestige(L) {
 
 function prestige_gain(L) {
     var b = L >= 1 ? player.prestige_currency[L - 1] : player.points
-    b = b.div(new Decimal(L*10+25).pow_base(10)).add(1).log10()
+    b = b.div(new Decimal(L).pow_base(3.5).times(25).pow_base(10)).add(1).log10()
     b = b.times(BOOSTS[L + 1])
     var PB = new Decimal(1)
     for (var i = L+1; i < player.prestige_currency.length; i++){
         PB = PB.times(prestige_boost(i))
     }
     b = b.times(PB)
+    b = b.pow(sp_boost())
     return b
 }
 
@@ -111,6 +112,7 @@ function update(dt) {
     //the player, dt = delta time    
     BOOSTS = calc_pp_boosts()
     player.points = player.points.add(get_gain().times(dt / 1000))
+    player.total_points = player.total_points.add(get_gain().times(dt / 1000))
     
     total_boost_display()
     update_all_btns()
@@ -146,6 +148,8 @@ function score() {
     player.score = S
     return S.sub(1)
 }
+
+function sp_boost() { return player.score.div(30).add(1).log10().add(1) }
 
 
 ct = Date.now()
