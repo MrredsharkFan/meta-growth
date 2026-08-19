@@ -15,12 +15,16 @@ var app = new Vue({
 
         prestige_gain,
         prestige_boost,
+        pres_req,
 
         upg_cost,
 
         auto_cost,
 
-        sp_boost
+        sp_boost,
+        sp_boost_2,
+        sp_boost_3,
+        sps
     }
 }
 )

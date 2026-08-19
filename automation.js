@@ -39,15 +39,11 @@ function switch_auto(i) {
 }
 
 function gen_auto_triggered() {
-    document.getElementById("auto_enabled").innerHTML = ``
     for (var i in player.automated) {
         var j = player.automated[i]
         var k = j.split("/"); k = Math.max(k[0],k[1])
         if (!(null==j)) {
-            document.getElementById("auto_enabled").innerHTML = document.getElementById("auto_enabled").innerHTML +
-                `${btn_name(j)}<br>`
-            console.log(i)
-            document.getElementById(`a${j}`).style.backgroundColor = `hsl(${k*30},50%,60%`
+            document.getElementById(`a${j}`).style.backgroundColor = `hsl(${k * 30},50%,60%`
         }
     }
 }

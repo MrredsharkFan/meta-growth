@@ -13,9 +13,18 @@ function mul() {
     J = J.add(player.basic_upgrades[1])
     return J
 }
+
 function get_gain() {
     var B = player.points.add(1).log10().add(1).pow(log_exp()).times(player.points.add(1).pow(exp())).times(mul())
     B = B.times(pts_prestige_booost()).times(BOOSTS[0])
+    //sps boost 2
+    if (player.score.gte(1e4)) {
+        var M = new Decimal(1)
+        for (var i in player.prestige_currency) {
+            M = M.times(player.prestige_currency[i].add(1))
+        }
+        B = B.times(M.pow(sp_boost_2()))
+    }
     return B
 }
 
@@ -78,9 +87,15 @@ function prestige(L) {
     }
 }
 
+const mysterious_constant_that_nobody_shall_understand_its_meaning = (Math.log10(2) * 1024 / 25)**0.5
+
+function pres_req(L) {
+    return new Decimal(L).pow_base(mysterious_constant_that_nobody_shall_understand_its_meaning).times(25).pow_base(10)
+}
+
 function prestige_gain(L) {
     var b = L >= 1 ? player.prestige_currency[L - 1] : player.points
-    b = b.div(new Decimal(L).pow_base(3.5).times(25).pow_base(10)).add(1).log10()
+    b = b.div(pres_req(L)).add(1).log10()
     b = b.times(BOOSTS[L + 1])
     var PB = new Decimal(1)
     for (var i = L+1; i < player.prestige_currency.length; i++){
@@ -132,24 +147,27 @@ function update(dt) {
         }
     }
 
-    auto_logic()
-    
+    player.score = player.score.add(sps().times(dt).div(1000))
 
-    score()
+    auto_logic()
 
 
 }
 
-function score() {
+function sps() {
     var S = player.points.add(1).log10().add(1).log10().add(1)
     for (var i in player.prestige_currency) {
         S = S.times(player.prestige_currency[i].add(1).log10().add(1).log10().add(1))
     }
-    player.score = S
-    return S.sub(1)
+    if (player.score.gte(1e5)) {
+        S = S.times(sp_boost_3())
+    }
+    return S.sub(1).div(1000)
 }
 
 function sp_boost() { return player.score.div(30).add(1).log10().add(1) }
+function sp_boost_2() { return player.score.div(1e4).add(1).log10() }
+function sp_boost_3() {return player.score.div(1e5).add(1).sqrt()}
 
 
 ct = Date.now()
@@ -160,4 +178,4 @@ let loop = setInterval(function () {
     update(typeof (t) == "undefined" ? 0 : t)
 
     
-},1)
+},50)
