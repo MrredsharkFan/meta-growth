@@ -11,11 +11,17 @@
     <script src="upgrade.js"></script>
     <script src="save.js"></script>
     <script src="game.js"></script>
+    <script src="automation.js"></script>
+    <script src="tab.js"></script>
     <script defer src="v.js"></script>
 
     <style>
         html {
             background-color: black;
+        }
+
+        * {
+            font-family: monospace;
         }
 
         #app {
@@ -34,8 +40,18 @@
         }
 
         .pres_upg {
-            min-width: 25%;
-            max-width: 25%;
+            width: 25%;
+            padding: 5px
+        }
+
+        #auto_upg {
+            flex-wrap: wrap;
+        }
+
+        #auto_upg>button {
+            flex: 1;
+            min-width: 250px;
+            padding: 5px
         }
     </style>
 
@@ -76,29 +92,59 @@
         </button>
         </div>
         <hr>
-        <div style="text-align: center;">
-            Autobuy Basic Upgrades at 1,000 Best P<sup>1</sup><br>
-                <span style="font-size: 200%">{{format(player.prestige_currency[player.page])}} Prestige<sup>{{player.page+1}}</sup></span><br>
-            Boosting points by {{format(prestige_boost(player.page))}}<br>
-                <button style="flex: 1" onclick="player.page = Math.max(0,player.page-1);gen_all_upgs(player.page)">&larr;</button>
-                <button style="flex: 1" onclick="player.page = Math.min(player.prestige_currency.length,player.page+1);gen_all_upgs(player.page)">&rarr;</button>
-            <br><button class="prestige_btn" onclick="prestige(player.page)">
-                Prestige for {{format(prestige_gain(player.page))}} Prestige<sup>{{player.page+1}}</sup><br>
-                (Requires at least 1 to reset)
-            </button>
+        <div style="display: flex; gap: 10px;">
+        <button style="flex: 1; padding: 5px;" onclick="switch_tab('p')">Prestige</button>
+        <button style="flex: 1; padding: 5px;" onclick="switch_tab('m')">Automation</button>
+        <button style="flex: 1; padding: 5px;" onclick="switch_tab('e')">Extra Upgrades</button>
         </div>
         <hr>
-        <div style="text-align: center;">
-            <span style="font-size: 200%">Prestige Upgrades  </sup></span>
-            <button onclick="buy_max_change()">Currently buying <span id="buy_text">x1</span><br><sub>Click to change!</sub></button><br>
-            <div style="display: flex;">
-                <div style="flex: 1">
-                    <h3><u>Total boosts</u></h3>
-                    <span id="total_boost"></span>
-                </div>
-                <div style="flex: 1; display: flex; flex-wrap: wrap;" id="pupg">
+        <div  id="pres-tab">
+            <div style="text-align: center;">
+                Autobuy Basic Upgrades at 1,000 Best P<sup>1</sup><br>
+                    <span style="font-size: 200%">{{format(player.prestige_currency[player.page])}} Prestige<sup>{{player.page+1}}</sup></span><br>
+                Boosting lower resources by {{format(prestige_boost(player.page))}}<br>
+                    <button style="flex: 1" onclick="player.page = Math.max(0,player.page-1);gen_all_upgs(player.page)">&larr;</button>
+                    <button style="flex: 1" onclick="player.page = Math.min(player.prestige_currency.length,player.page+1);gen_all_upgs(player.page)">&rarr;</button>
+                <br><button class="prestige_btn" onclick="prestige(player.page)">
+                    Prestige for {{format(prestige_gain(player.page))}} Prestige<sup>{{player.page+1}}</sup><br>
+                    (Requires at least 1 to reset)
+                </button>
+            </div>
+            <hr>
+            <div style="text-align: center;">
+                <span style="font-size: 200%">Prestige Upgrades  </sup></span>
+                <button onclick="buy_max_change()">Currently buying <span id="buy_text">x1</span><br><sub>Click to change!</sub></button><br>
+                <div style="display: flex;">
+                    <div style="flex: 1">
+                        <h3><u>Total boosts</u></h3>
+                        <span id="total_boost"></span>
+                    </div>
+                    <div style="flex: 3; display: flex; flex-wrap: wrap;" id="pupg">
+                    </div>
                 </div>
             </div>
+        </div>
+        <div id="auto-tab" style="display: none; text-align: center;">
+            You currently have <span style="font-size: 150%;">{{player.automatons}}</span> automation points, enabling you to automate {{player.automated.length}}/{{player.automatons}} upgrades.<br>
+            <i>Also, when you get prestige<sup>n</sup>, gain 100% of prestige<sup>n-2</sup>/s</i><br>
+            <button onclick="buy_auto()">
+                Gain 1 automation point<br>Cost: {{format(auto_cost())}}
+            </button>
+            <hr>
+            <div style="display: flex;">
+                <div style="flex: 1">
+                    <u>Enabled Automations:</u>
+                    <br>
+                    <div  id="auto_enabled"></div>
+                </div>
+                <div style="flex: 3;">
+                    Click to toggle automation on/off.<br>
+                    <div id="auto_upg" style="display: flex"></div>
+                </div>
+            </div>
+        </div>
+        <div id="extra-tab" style="display: none; text-align: center;">
+            Your score is <span style="font-size: 150%">{{format(player.score,5)}}</span>
         </div>
     </div>
 </html>

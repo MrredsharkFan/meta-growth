@@ -9,7 +9,10 @@ function initPlayer() {
         unlocked_layers: 0,
         page: 0,
 
-        autobuy_basic: false
+        autobuy_basic: false,
+
+        automatons: new Decimal(0),
+        automated: []
     }
 }
 
@@ -19,9 +22,9 @@ NAME = "meta-growth" //place you want to direct your local storage thing
 
 player = initPlayer()
 
-const player_vars_d = ["points"]
+const player_vars_d = ["points","automatons"]
 const player_vars_l = ["basic_upgrades", "prestige_currency", "upgs"]
-const player_vars_str = ["unlocked_layers", "page", "autobuy_basic"]
+const player_vars_str = ["unlocked_layers", "page", "autobuy_basic","automated"]
 
 function detectNaN() {
     for (var i in player_vars_d) {

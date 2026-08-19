@@ -59,7 +59,7 @@ function hex(num) {
     return parseInt(j, 2).toString(16)
 }
 
-function format(num, prec = 3, small = false, no = "S:1e3003", comma = 6) {
+function format(num, prec = 3, small = false, no = "S:1e6", comma = 6) {
     if (no[0] == "S") { var lim = no.split(":")[1] }
     else { var lim = new Decimal(0) }
     var num = new Decimal(num)

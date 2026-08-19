@@ -70,7 +70,6 @@ function pupg(P, max = (document.getElementById("buy_text").innerHTML == "Max"))
     }
     var C = upg_cost(P, B)
         var Cr = P.split("/"); Cr = Math.max(Cr[0], Cr[1]);
-        console.log(player.upgs[P], C, P)
     if (player.prestige_currency[Cr - 1].gte(C)) {
         if (!max) {
             if (B == 0) {
@@ -136,10 +135,14 @@ function gen_all_upgs(L) {
         req = req.concat(`${L}/${i}/0`)
         req = req.concat(`${L}/${i}/1`)
     }
-    console.log(req)
     for (var i in req) {
         document.getElementById("pupg").innerHTML = document.getElementById("pupg").innerHTML+gen_upg_box(req[i]) 
     }
+}
+
+function btn_name(i) {
+    var U = i.split("/")
+    return `P${U[1]} gain x${types[U[2]].replace("x", `P${U[0]}`)}`
 }
 
 function update_all_btns() {
@@ -149,7 +152,7 @@ function update_all_btns() {
         if (typeof(id)=="undefined") break
         var U = id.split("/")
         var B = player.upgs[id]
-        C[i].innerHTML = `P${U[1]} gain x${types[U[2]].replace("x", `P${U[0]}`)}
+        C[i].innerHTML = `${btn_name(id)}
             <br>Cost: ${format(upg_cost(U.join("/"), B))} P<sup>${Math.max(U[0], U[1])}</sup>
             <br>Bought: ${format(B)}`
         var Cr = Math.max(U[0], U[1])

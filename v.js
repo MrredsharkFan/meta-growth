@@ -16,7 +16,9 @@ var app = new Vue({
         prestige_gain,
         prestige_boost,
 
-        upg_cost
+        upg_cost,
+
+        auto_cost
     }
 }
 )
