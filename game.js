@@ -17,14 +17,6 @@ function mul() {
 function get_gain() {
     var B = player.points.add(1).log10().add(1).pow(log_exp()).times(player.points.add(1).pow(exp())).times(mul())
     B = B.times(pts_prestige_booost()).times(BOOSTS[0])
-    //sps boost 2
-    if (player.score.gte(1e4)) {
-        var M = new Decimal(1)
-        for (var i in player.prestige_currency) {
-            M = M.times(player.prestige_currency[i].add(1))
-        }
-        B = B.times(M.pow(sp_boost_2()))
-    }
     return B
 }
 
@@ -62,13 +54,13 @@ function bu3() {
     }
 }
 
-function prestige(L) {
+function prestige(L,force=false) {
     if (player.unlocked_layers < L+1) {
         player.unlocked_layers = L+1
     }
     //L = 0: ...
     var G = prestige_gain(L)
-    if (G.gte(1)) {
+    if (G.gte(1) || force) {
         if (player.prestige_currency.length <= L) { player.prestige_currency[L] = G }
         else { player.prestige_currency[L] = player.prestige_currency[L].add(G) }
         player.basic_upgrades = [new Decimal(0), new Decimal(0), new Decimal(0)]
@@ -87,10 +79,10 @@ function prestige(L) {
     }
 }
 
-const mysterious_constant_that_nobody_shall_understand_its_meaning = (Math.log10(2) * 1024 / 25)**0.5
+const mysterious_constant_that_nobody_shall_understand_its_meaning = (Math.log10(2) * 1024 / 20)**(1/3)
 
 function pres_req(L) {
-    return new Decimal(L).pow_base(mysterious_constant_that_nobody_shall_understand_its_meaning).times(25).pow_base(10)
+    return new Decimal(L).pow_base(mysterious_constant_that_nobody_shall_understand_its_meaning).times(20).pow_base(10)
 }
 
 function prestige_gain(L) {
@@ -102,14 +94,24 @@ function prestige_gain(L) {
         PB = PB.times(prestige_boost(i))
     }
     b = b.times(PB)
-    b = b.pow(sp_boost())
+    if (player.extra_boosts.length > L) {
+        if (player.extra_boosts[L][0] == 0) {
+            b = b.pow(get_boost_mag(player.extra_boosts[L]))
+        }
+    }
     return b
 }
 
 function prestige_boost(L) {
     if (player.prestige_currency.length>L) {
         var b = player.prestige_currency[L]
-        return b.add(1).log10().add(1).pow(2)
+        var b = b.add(1).log10().add(1).pow(2)
+        if (player.extra_boosts.length > L) {
+            if (player.extra_boosts[L][0] == 1) {
+                b = b.pow(get_boost_mag(player.extra_boosts[L]))
+            }
+        }
+        return b
     }
     else {return new Decimal(1)}
 }
@@ -151,6 +153,8 @@ function update(dt) {
 
     auto_logic()
 
+    dg("display-boost",display_extra_boosts())
+
 
 }
 
@@ -165,10 +169,6 @@ function sps() {
     return S.sub(1).div(1000)
 }
 
-function sp_boost() { return player.score.div(30).add(1).log10().add(1) }
-function sp_boost_2() { return player.score.div(1e4).add(1).log10() }
-function sp_boost_3() {return player.score.div(1e5).add(1).sqrt()}
-
 
 ct = Date.now()
 let loop = setInterval(function () {
@@ -178,4 +178,4 @@ let loop = setInterval(function () {
     update(typeof (t) == "undefined" ? 0 : t)
 
     
-},50)
+},16)

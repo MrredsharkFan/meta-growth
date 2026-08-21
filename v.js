@@ -3,6 +3,7 @@ var app = new Vue({
     data: {
         player,
         format,
+        format_time,
 
         mul,
         exp,
@@ -20,11 +21,9 @@ var app = new Vue({
         upg_cost,
 
         auto_cost,
+        sps,
 
-        sp_boost,
-        sp_boost_2,
-        sp_boost_3,
-        sps
+        display_extra_boosts
     }
 }
 )
